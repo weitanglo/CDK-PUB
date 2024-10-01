@@ -1,0 +1,212 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`initial tes suite Lambda stack snapshot 1`] = `
+{
+  "webHookLambda3427ABA6": {
+    "DependsOn": [
+      "webHookLambdaServiceRole1A032560",
+    ],
+    "Properties": {
+      "Code": {
+        "S3Bucket": {
+          "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+        },
+        "S3Key": "dee3b54a9a812d75cbae834cfbf1ba8b9c50401cdaf74f1b8f48dad7637be23a.zip",
+      },
+      "Environment": {
+        "Variables": {
+          "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+        },
+      },
+      "Handler": "index.handler",
+      "Role": {
+        "Fn::GetAtt": [
+          "webHookLambdaServiceRole1A032560",
+          "Arn",
+        ],
+      },
+      "Runtime": "nodejs18.x",
+    },
+    "Type": "AWS::Lambda::Function",
+  },
+}
+`;
+
+exports[`initial tes suite Monitor stack snapshot 1`] = `
+{
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "alarmTopic0C9A2A41": {
+      "Properties": {
+        "DisplayName": "alarmTopic",
+        "TopicName": "alarmTopic",
+      },
+      "Type": "AWS::SNS::Topic",
+    },
+    "spacesApi4xxAlarmA15E009C": {
+      "Properties": {
+        "AlarmActions": [
+          {
+            "Ref": "alarmTopic0C9A2A41",
+          },
+        ],
+        "AlarmName": "spacesApi4xxAlarm",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "Dimensions": [
+          {
+            "Name": "ApiName",
+            "Value": "SpacesApi",
+          },
+        ],
+        "EvaluationPeriods": 1,
+        "MetricName": "4XXError",
+        "Namespace": "AWS/ApiGateway",
+        "OKActions": [
+          {
+            "Ref": "alarmTopic0C9A2A41",
+          },
+        ],
+        "Period": 60,
+        "Statistic": "Sum",
+        "Threshold": 5,
+        "Unit": "Count",
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "webHookLambda3427ABA6": {
+      "DependsOn": [
+        "webHookLambdaServiceRole1A032560",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "dee3b54a9a812d75cbae834cfbf1ba8b9c50401cdaf74f1b8f48dad7637be23a.zip",
+        },
+        "Environment": {
+          "Variables": {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+          },
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "webHookLambdaServiceRole1A032560",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs18.x",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "webHookLambdaAllowInvokeMonitorStackalarmTopic45B6AF8430DB74B1": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "webHookLambda3427ABA6",
+            "Arn",
+          ],
+        },
+        "Principal": "sns.amazonaws.com",
+        "SourceArn": {
+          "Ref": "alarmTopic0C9A2A41",
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "webHookLambdaServiceRole1A032560": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "webHookLambdaalarmTopic761A88CB": {
+      "Properties": {
+        "Endpoint": {
+          "Fn::GetAtt": [
+            "webHookLambda3427ABA6",
+            "Arn",
+          ],
+        },
+        "Protocol": "lambda",
+        "TopicArn": {
+          "Ref": "alarmTopic0C9A2A41",
+        },
+      },
+      "Type": "AWS::SNS::Subscription",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`initial tes suite Snstopic stack snapshot 1`] = `
+{
+  "alarmTopic0C9A2A41": {
+    "Properties": {
+      "DisplayName": "alarmTopic",
+      "TopicName": "alarmTopic",
+    },
+    "Type": "AWS::SNS::Topic",
+  },
+}
+`;
